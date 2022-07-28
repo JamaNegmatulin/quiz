@@ -1,6 +1,6 @@
 <main class="quiz">
   <div class="left">
-    <ng-container *ngFor="let question of questions$ | async">
+    <ng-container *ngIf="currentQuestion$ | async as question">
       <div class="question">
         {{ question.text }}
       </div>
