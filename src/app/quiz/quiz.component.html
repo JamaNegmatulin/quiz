@@ -1,14 +1,15 @@
 <main class="quiz">
   <div class="left">
-    <div class="question">
-      {{questions$ | async | json}}
-    </div>
-    <div class="answers">
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <button>4</button>
-    </div>
+    <ng-container *ngFor="let question of questions$ | async">
+      <div class="question">
+        {{ question.text }}
+      </div>
+      <div class="answers">
+        <button *ngFor="let answer of question.answers">
+          {{ answer }}
+        </button>
+      </div>
+    </ng-container>
   </div>
   <div class="right">
     <div class="progress">123</div>

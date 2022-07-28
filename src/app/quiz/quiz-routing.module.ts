@@ -6,6 +6,6 @@ const routes: Routes = [{ path: ':quizid', component: QuizComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class QuizRoutingModule { }
+export class QuizRoutingModule {}

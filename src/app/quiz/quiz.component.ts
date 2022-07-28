@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class QuizComponent implements OnInit {
   public questions$!: Observable<any[]>;
+  public answers$!: Observable<any[]>;
 
   constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute) {
     activeteRoute.paramMap.subscribe((params) => {
