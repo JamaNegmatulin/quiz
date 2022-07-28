@@ -18,6 +18,9 @@ export class QuizComponent implements OnInit {
   public questions$!: Observable<Question[]>;
   public currentQuestion$ = new Subject<Question>();
 
+  private questions: Question[] = [];
+  private currentQuestionIndex: number = 0;
+
   constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute) {
     activeteRoute.paramMap.subscribe((params) => {
       const quizid = params.get('quizid');
@@ -26,10 +29,17 @@ export class QuizComponent implements OnInit {
       this.questions$ = collectionData(questions, { idField: 'uid' }) as Observable<Question[]>;
 
       this.questions$.subscribe((questions) => {
-        this.currentQuestion$.next(questions[0]);
+        this.questions = questions;
+        this.currentQuestion$.next(questions[this.currentQuestionIndex]);
       });
     });
   }
 
   ngOnInit(): void {}
+
+  answerToQuestion(answer: string) {
+    //Увеличиваем индекс текущего вопроса на 1
+    this.currentQuestionIndex = this.currentQuestionIndex + 1;
+    this.currentQuestion$.next(this.questions[this.currentQuestionIndex]);
+  }
 }
