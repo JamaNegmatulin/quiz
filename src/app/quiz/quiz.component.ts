@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export interface Question {
   text: string;
@@ -15,31 +14,54 @@ export interface Question {
   styleUrls: ['./quiz.component.scss'],
 })
 export class QuizComponent implements OnInit {
-  public questions$!: Observable<Question[]>;
-  public currentQuestion$ = new Subject<Question>();
+  public currentQuestion?: Question;
 
   private questions: Question[] = [];
   private currentQuestionIndex: number = 0;
 
-  constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute) {
-    activeteRoute.paramMap.subscribe((params) => {
+  constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.activeteRoute.paramMap.subscribe((params) => {
+      console.log('url поменяли', params);
+
       const quizid = params.get('quizid');
 
-      const questions = collection(firestore, `quizes/${quizid}/questions`);
-      this.questions$ = collectionData(questions, { idField: 'uid' }) as Observable<Question[]>;
+      console.log('quized сейчас равно', params);
 
-      this.questions$.subscribe((questions) => {
-        this.questions = questions;
-        this.currentQuestion$.next(questions[this.currentQuestionIndex]);
-      });
+      console.log('начинаем делать запрос к базе');
+      this.fetchAllQuestions(quizid);
     });
   }
 
-  ngOnInit(): void {}
+  fetchAllQuestions(quizid: string | null) {
+    //создаём ссылку в коллекции questions в firebase
+    const questionsRef = collection(this.firestore, `quizes/${quizid}/questions`);
+    console.log('создаём ссылку к questions, questionsRef равно', questionsRef);
+
+    //делаем запрос к коллекции в firebase
+    console.log('делаем запрос к коллекции');
+    collectionData(questionsRef, { idField: 'uid' }).subscribe((questions) => {
+      // Охраняем вопросы в переменную questions
+      this.questions = questions as Question[];
+
+      console.log('запрос закончился, question равно', this.questions);
+
+      //берём первый вопрос и сохраняем его в переменную currentQuestion
+      //currentQuestionIndex = 0
+      this.currentQuestion = this.questions[this.currentQuestionIndex];
+
+      console.log('currentQuestionIndex равно', this.currentQuestionIndex);
+      console.log('currentQuestion равно', this.currentQuestion);
+    });
+  }
 
   answerToQuestion(answer: string) {
     //Увеличиваем индекс текущего вопроса на 1
     this.currentQuestionIndex = this.currentQuestionIndex + 1;
-    this.currentQuestion$.next(this.questions[this.currentQuestionIndex]);
+    this.currentQuestion = this.questions[this.currentQuestionIndex];
+    console.log('Увеличиваем индекс текущего вопроса на 1');
+    console.log('currentQuestionIndex равно', this.currentQuestionIndex);
+    console.log('currentQuestion равно', this.currentQuestion);
   }
 }
