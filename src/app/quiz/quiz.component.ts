@@ -15,9 +15,9 @@ export interface Question {
 })
 export class QuizComponent implements OnInit {
   public currentQuestion?: Question;
+  public currentQuestionIndex: number = 0;
 
   private questions: Question[] = [];
-  private currentQuestionIndex: number = 0;
 
   constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute) {}
 
