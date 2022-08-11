@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { QuizFinishDialogComponent } from './quiz-finish-dialog/quiz-finish-dialog.component';
 
 export interface Question {
   text: string;
@@ -20,7 +22,7 @@ export class QuizComponent implements OnInit {
   public questions: Question[] = [];
   public currectAnswersCount = 0;
 
-  constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute) {}
+  constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.activeteRoute.paramMap.subscribe((params) => {
@@ -71,5 +73,9 @@ export class QuizComponent implements OnInit {
     console.log('Увеличиваем индекс текущего вопроса на 1');
     console.log('currentQuestionIndex равно', this.currentQuestionIndex);
     console.log('currentQuestion равно', this.currentQuestion);
+
+    if (this.currentQuestionIndex >= this.questions.length) {
+      this.dialog.open(QuizFinishDialogComponent);
+    }
   }
 }

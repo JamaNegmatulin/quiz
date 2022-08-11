@@ -4,16 +4,11 @@ import { CommonModule } from '@angular/common';
 import { QuizRoutingModule } from './quiz-routing.module';
 import { QuizComponent } from './quiz.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
-
+import { QuizFinishDialogComponent } from './quiz-finish-dialog/quiz-finish-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [
-    QuizComponent,
-    QuizListComponent
-  ],
-  imports: [
-    CommonModule,
-    QuizRoutingModule
-  ]
+  declarations: [QuizComponent, QuizListComponent, QuizFinishDialogComponent],
+  imports: [CommonModule, QuizRoutingModule, MatDialogModule],
 })
-export class QuizModule { }
+export class QuizModule {}
