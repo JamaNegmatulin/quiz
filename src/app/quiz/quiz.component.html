@@ -1,6 +1,6 @@
 <main class="quiz">
   <div class="left">
-    <ng-container *ngIf="currentQuestion as question">
+    <ng-container *ngIf="currentQuestion as question; else finishedTemplate">
       <div class="question">
         {{ question.text }}
       </div>
@@ -10,6 +10,11 @@
         </button>
       </div>
     </ng-container>
+
+    <ng-template #finishedTemplate>
+      <div>Вы ответили на {{currectAnswersCount}} вопросов из {{questions.length}}</div>
+      <app-quiz-list> </app-quiz-list>
+    </ng-template>
   </div>
   <div class="right">
     <div class="progress">

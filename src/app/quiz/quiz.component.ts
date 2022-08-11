@@ -18,6 +18,7 @@ export class QuizComponent implements OnInit {
   public currentQuestion?: Question;
   public currentQuestionIndex: number = 0;
   public questions: Question[] = [];
+  public currectAnswersCount = 0;
 
   constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute) {}
 
@@ -57,9 +58,11 @@ export class QuizComponent implements OnInit {
   }
 
   answerToQuestion(answer: string) {
-
-    if (this.currentQuestion){
+    if (this.currentQuestion) {
       this.currentQuestion.userAnswer = answer == this.currentQuestion.correctAnswer;
+      if (answer == this.currentQuestion.correctAnswer) {
+        this.currectAnswersCount = this.currectAnswersCount + 1;
+      }
     }
 
     //Увеличиваем индекс текущего вопроса на 1

@@ -3,7 +3,7 @@
 <nav>
   <ul>
     <li *ngFor="let quiz of quizes">
-      <a routerLink="/quiz/{{ quiz.uid }}">{{ quiz.name }}</a>
+      <a href="/quiz/{{ quiz.uid }}">{{ quiz.name }}</a>
     </li>
   </ul>
 </nav>
