@@ -6,6 +6,7 @@ export interface Question {
   text: string;
   answers: Array<string>;
   correctAnswer: string;
+  userAnswer: boolean;
 }
 
 @Component({
@@ -16,8 +17,7 @@ export interface Question {
 export class QuizComponent implements OnInit {
   public currentQuestion?: Question;
   public currentQuestionIndex: number = 0;
-
-  private questions: Question[] = [];
+  public questions: Question[] = [];
 
   constructor(private firestore: Firestore, private activeteRoute: ActivatedRoute) {}
 
@@ -57,6 +57,11 @@ export class QuizComponent implements OnInit {
   }
 
   answerToQuestion(answer: string) {
+
+    if (this.currentQuestion){
+      this.currentQuestion.userAnswer = answer == this.currentQuestion.correctAnswer;
+    }
+
     //Увеличиваем индекс текущего вопроса на 1
     this.currentQuestionIndex = this.currentQuestionIndex + 1;
     this.currentQuestion = this.questions[this.currentQuestionIndex];

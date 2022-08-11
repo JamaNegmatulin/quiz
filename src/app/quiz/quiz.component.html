@@ -12,6 +12,12 @@
     </ng-container>
   </div>
   <div class="right">
-    <div class="progress">{{ currentQuestionIndex + 1 }}</div>
+    <div class="progress">
+      <div *ngFor="let question of questions; let i = index">
+        <div [class.correct]="question.userAnswer === true" [class.incorrect]="question.userAnswer === false">
+          {{ i + 1 }}: {{ i * 5 }}$
+        </div>
+      </div>
+    </div>
   </div>
 </main>
